@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -5,12 +7,16 @@ import java.util.List;
 public class User {
     private String login;
     private String password;
-    //private Wallet wallet;
+    private Wallet wallet;
 
     public User (String login, String password) {
         this.login = login;
         this.password = password;
-        //this.wallet = new Wallet();
+        this.wallet = new Wallet();
+    }
+
+    // для десереализации из json необходим конструктор по умолчанию
+    public User () {
     }
 
     public String getLogin() {
@@ -21,48 +27,51 @@ public class User {
         return password;
     }
 
-    public String toCSVString() {
-        return login + ";" + password + ";";
+    public Wallet getWallet() {
+        return wallet;
     }
 
-    public static void saveCSV(List<User> users) {
-        String path = "users.csv";
+    public static void saveJSON (List<User> users) {
+        String path = "users.json";
 
+        // Используем try-with-resources, чтобы автоматически закрывать writer
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            // Записываем данные
+            ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
             for (User user : users) {
-                writer.write(user.toCSVString());
+                String jsonString = objectMapper.writeValueAsString(user);
+
+                //строка для теста
+                System.out.println(jsonString);
+
+                writer.write(jsonString);
                 writer.newLine();
             }
-            System.out.println("Данные успешно сохранены в " + path);
         } catch (IOException e) {
-            System.out.println("Ошибка при записи файла: " + e.getMessage());
+            System.out.println("Какие-то проблемы с формированием json: " + e.getMessage());
         }
     }
 
-    public static List<User> fromCSV() {
-        String path = "users.csv"; // путь к вашему файлу CSV
+    public static List<User> fromJSON() {
+        String path = "users.json"; // путь к файлу json
         List<User> users = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
-
             while ((line = br.readLine()) != null) {
 
-                String[] fields = line.split(";"); // разделяем по точке с запятой
-                if (fields.length == 2) {
-                    String login = fields[0];
-                    String password  = fields[1];
+                //строка для теста
+                System.out.println(line);
 
-                    User user = new User(login, password);
-                    users.add(user);
-                }
+                User user = mapper.readValue(line, User.class);
+                users.add(user);
             }
         } catch (IOException e) {
-            System.out.println("Ошибка при чтении файла: " + e.getMessage());
+            System.out.println("Какие-то проблемы с чтением json: " + e.getMessage());
         }
         return users;
     }
+
 
 }
 

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="jwebmp.jackson.datatype.jsr310" type="repository">
+    <properties maven-id="com.jwebmp.jackson.datatype:jackson-datatype-jsr310:0.63.0.19" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jackson-datatype-jsr310-0.63.0.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-databind-0.63.0.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-annotations-0.63.0.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-core-0.63.0.19.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
