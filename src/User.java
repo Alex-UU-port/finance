@@ -40,9 +40,6 @@ public class User {
             for (User user : users) {
                 String jsonString = objectMapper.writeValueAsString(user);
 
-                //строка для теста
-                System.out.println(jsonString);
-
                 writer.write(jsonString);
                 writer.newLine();
             }
@@ -59,9 +56,6 @@ public class User {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
-
-                //строка для теста
-                System.out.println(line);
 
                 User user = mapper.readValue(line, User.class);
                 users.add(user);

@@ -30,4 +30,14 @@ public class Category {
         System.out.println("Имя категории: " + name + "\t\tМесячный бюджет: " + budget);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Category other = (Category) obj;
+        if (name.equals(other.getName())) {
+            return true;
+        } else return false;
+    }
+
 }
